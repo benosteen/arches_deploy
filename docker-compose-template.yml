@@ -60,7 +60,7 @@ services:
         - PUBLIC_MODE=False
         - TZ=PST
       depends_on:
-        - arches_instanceq
+        - arches_instance
 
     elasticsearch:
       container_name: elasticsearch
