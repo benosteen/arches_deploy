@@ -48,7 +48,7 @@ services:
         - '80:80'
         - '443:443'
       volumes:
-        - aata_arches-static:/www/static
+        - arches_instance-static:/www/static
         - letsencrypt-acme-challenge:/var/www
         - letsencrypt:/etc/letsencrypt
       environment:
