@@ -1,16 +1,16 @@
 version: '2'
 services:
 
-    aata_arches:
-      container_name: aata_arches
-      command: run_aata
+    arches_instance:
+      container_name: arches_instance
+      command: run_arches
       build:
         context: .
         dockerfile: ./Dockerfile
       volumes:
-        - aata_arches-log:/arches/arches/logs
-        - aata_arches-static:/static_root
-        - aata_arches-media:/web_root/arches
+        - arches_instance-log:/arches/arches/logs
+        - arches_instance-static:/static_root
+        - arches_instance-media:/web_root/arches
       environment:
         - ARCHES_VERSION=master
         - PGUSERNAME=arches
@@ -26,7 +26,7 @@ services:
         - COUCHDB_PASS=$$CHANGEMECOUCHDB$$
         - ESHOST=elasticsearch
         - ESPORT=9200
-        - ELASTICSEARCH_PREFIX=aata
+        - ELASTICSEARCH_PREFIX=SET_ME
         - DJANGO_MODE=PROD
         - DJANGO_DEBUG=False
         - DJANGO_REMOTE_DEBUG=False
@@ -37,7 +37,6 @@ services:
       ports:
         - '8000:8000'
       depends_on:
-        - db
         - elasticsearch
         - couchdb
 
@@ -55,32 +54,13 @@ services:
       environment:
         - NGINX_PROXY_MODE=local
         - NGINX_PROTOCOL=http
-        - LOCAL_PROXY_HOST=aata_arches
+        - LOCAL_PROXY_HOST=arches_instance
         - LOCAL_PROXY_PORT=8000
         - DOMAIN_NAMES=localhost
         - PUBLIC_MODE=False
         - TZ=PST
       depends_on:
-        - aata_arches
-
-    db:
-      container_name: db
-      build:
-        context: .
-        dockerfile: ./Dockerfile_postgis
-      volumes:
-          - postgres-data:/var/lib/postgresql/data
-          - postgres-log:/var/log/postgresql
-      ports:
-        - '5432:5432'
-      environment:
-        - POSTGRES_PASSWORD=$$CHANGEME!!$$
-        - PGUSERNAME=arches
-        # MUST MATCH password set in aata_arches container config above
-        - PGPASSWORD=$$CHANGEMEPGPASS$$
-        - PGDBNAME=arches
-        - POSTGRES_USER=postgres
-        - TZ=PST
+        - arches_instanceq
 
     elasticsearch:
       container_name: elasticsearch
@@ -132,15 +112,12 @@ services:
 
 
 volumes:
-    aata_arches-log:
-    aata_arches-media:
-    aata_arches-static:
+    arches_instance-log:
+    arches_instance-media:
+    arches_instance-static:
     couchdb-data:
     couchdb-log:
-    postgres-data:
-    postgres-log:
     elasticsearch-data:
     letsencrypt:
     letsencrypt-log:
     letsencrypt-acme-challenge:
-    pgadmin_data:
