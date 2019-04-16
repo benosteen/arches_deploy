@@ -3,7 +3,7 @@ services:
 
     arches_instance:
       container_name: arches_instance
-      command: run_arches
+      command: /docker/main_entrypoint.sh run_arches
       build:
         context: .
         dockerfile: ./Dockerfile
