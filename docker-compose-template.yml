@@ -13,6 +13,11 @@ services:
         - arches_instance-media:/web_root/arches
       environment:
         - ARCHES_VERSION=master
+        - USE_LDAP=True
+        - AUTH_LDAP_SERVER_URI="ldaps://"
+        - AUTH_LDAP_BIND_DN="cn=django_agent,dc=example,dc=org"
+        - AUTH_LDAP_BIND_PASSWORD="foobar"
+        - AUTH_LDAP_BASE_DN_SEARCH="ou=Users,dc=example,dc=org"
         - PGUSERNAME=arches
         # MUST MATCH password set in db container config below
         - PGPASSWORD=$$CHANGEMEPGPASS$$
